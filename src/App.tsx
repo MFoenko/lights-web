@@ -6,33 +6,54 @@ type AppState = {
   color?: RGBColor,
 }
 
+class App extends Component<{}, AppState> {
 
-class App extends Component< {} , AppState>{
-
-  constructor() {
-    super({});
-    this.state = { color: {a: 0, r: 0, g: 0, b: 0} }
+  constructor(props: {}) {
+    super(props);
+    this.state = {color: {a: 0, r: 0, g: 0, b: 0}}
   }
 
   render() {
 
     return (
-      <div className="
-      h-screen
-      w-screen
-      flex
-      justify-center
-      items-center
-    "
-      style={{backgroundColor: this.state.color?.toString() ?? "#000000"}}
+      <div
+        className="
+          bg-gray-700
+          h-screen
+          w-screen
+        "
+        style={{
+          backgroundColor: colorToRgbaString(this.state.color),
+          border: `10px solid ${colorToRgbaString(this.state.color)}`,
+          borderRadius: "2px",
+        }}
       >
-        <ColorPicker
-          color={this.state.color}
-          setColor={(color) => this.setState((state, props) => ({ ...state, color: color })) }
-        />
+        <div
+          className="
+            bg-gray-700
+            h-full
+            w-full
+            flex
+            justify-center
+            items-center
+            rounded-lg
+          "
+        >
+          <ColorPicker
+            color={this.state.color}
+            setColor={(color) => this.setState((state, props) => ({...state, color: color}))}
+          />
+        </div>
       </div>
     );
   }
+}
+
+function colorToRgbaString(rgb?: RGBColor): string {
+  // if (rgb == undefined) return "rgba(0,0,0,0)"
+  let parts = [rgb?.r,rgb?.g,rgb?.b,rgb?.a].join(',')
+
+  return `rgba(${parts})`
 }
 
 export default App;
