@@ -1,21 +1,21 @@
-import React, {useState} from 'react';
-import {CirclePicker} from 'react-color'
-import {
-  setColor,
-  selectColor,
-} from "./colorpickerSlice";
-import {useDispatch, useSelector} from "react-redux";
+import {CirclePicker, Color, RGBColor} from 'react-color'
 
-export function ColorPicker() {
+interface ColorPickerProps {
+  color?: RGBColor,
+  setColor: (color?: RGBColor) => void,
+}
 
-  const color = useSelector(selectColor)
-  const dispatch = useDispatch()
+
+export function ColorPicker({color, setColor}: ColorPickerProps) {
+
 
   return (
-      <CirclePicker
-        color={color}
-        onChangeComplete={ (c) => dispatch(setColor(c.hex)) }
-      />
+    <CirclePicker
+      color={color}
+      onChangeComplete={(c) => {
+        setColor(c.rgb)
+      }}
+    />
   )
 
 }
