@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {ColorPicker} from "./features/colorpicker/ColorPicker";
 import {Color, RGBColor} from "react-color";
+import lightsService from "./services/lightsService";
 
 type AppState = {
   color?: RGBColor,
@@ -41,7 +42,10 @@ class App extends Component<{}, AppState> {
         >
           <ColorPicker
             color={this.state.color}
-            setColor={(color) => this.setState((state, props) => ({...state, color: color}))}
+            setColor={(color) => {
+              this.setState((state, props) => ({...state, color: color}))
+              lightsService.setColor(colorToHex(color))
+            }}
           />
         </div>
       </div>
@@ -54,6 +58,19 @@ function colorToRgbaString(rgb?: RGBColor): string {
   let parts = [rgb?.r,rgb?.g,rgb?.b,rgb?.a].join(',')
 
   return `rgba(${parts})`
+}
+
+function colorToHex(rgb?: RGBColor): string {
+  let parts = [rgb?.r,rgb?.g,rgb?.b,rgb?.a]
+    .filter((value)=>{
+      return value != undefined
+    })
+    .map((val) => {
+      return (val as number).toString(16)
+    })
+    .join('')
+
+  return `#${parts}`
 }
 
 export default App;
