@@ -94,6 +94,9 @@ function colorToHex(rgb?: RGBColor): string {
     .map((val) => {
       return (val as number).toString(16)
     })
+    .map((val) => {
+      return val.length == 1 ? "0" + val : val
+    })
     .join('')
 
   return `#${parts}`
