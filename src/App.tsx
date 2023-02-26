@@ -11,11 +11,12 @@ class App extends Component<{}, AppState> {
 
   constructor(props: {}) {
     super(props);
-    this.state = {color: {a: 0, r: 0, g: 0, b: 0}}
+    this.state = {color: this.DEFAULT_COLOR}
   }
 
-  render() {
+  private readonly DEFAULT_COLOR = {a: 1, r: 0, g: 0, b: 0};
 
+  render() {
     return (
       <div
         className="
@@ -35,18 +36,43 @@ class App extends Component<{}, AppState> {
             h-full
             w-full
             flex
+            flex-col
             justify-center
             items-center
             rounded-lg
           "
         >
-          <ColorPicker
-            color={this.state.color}
-            setColor={(color) => {
-              this.setState((state, props) => ({...state, color: color}))
-              lightsService.setColor(colorToHex(color))
-            }}
-          />
+          <div
+            className="
+            text-center
+            ">
+            <ColorPicker
+              color={this.state.color}
+              setColor={(color) => {
+                this.setState((state, props) => ({...state, color: color}))
+                lightsService.setColor(colorToHex(color))
+              }}
+            />
+            <button
+              className="
+                bg-gray-500
+                hover:bg-gray-700
+                text-white
+                font-bold
+                mt-8
+                w-full
+                py-2
+                px-4
+                rounded
+              "
+              onClick={() => {
+                this.setState((state, props) => ({...state, color: this.DEFAULT_COLOR}))
+                lightsService.setColor(colorToHex(this.DEFAULT_COLOR))
+              }}
+            >
+              Off
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -55,14 +81,14 @@ class App extends Component<{}, AppState> {
 
 function colorToRgbaString(rgb?: RGBColor): string {
   // if (rgb == undefined) return "rgba(0,0,0,0)"
-  let parts = [rgb?.r,rgb?.g,rgb?.b,rgb?.a].join(',')
+  let parts = [rgb?.r, rgb?.g, rgb?.b, rgb?.a].join(',')
 
   return `rgba(${parts})`
 }
 
 function colorToHex(rgb?: RGBColor): string {
-  let parts = [rgb?.r,rgb?.g,rgb?.b,rgb?.a]
-    .filter((value)=>{
+  let parts = [rgb?.r, rgb?.g, rgb?.b, rgb?.a]
+    .filter((value) => {
       return value != undefined
     })
     .map((val) => {
